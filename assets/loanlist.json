@@ -1,0 +1,84 @@
+[{
+  "loanaccountnumber": "TWL1000000001",
+  "customername": "pravin gangad",
+  "registrationnummber": "MH03CE4373",
+  "make": "HONDA",
+  "model": "UNICORN 150cc"
+},
+{
+  "loanaccountnumber": "TWL1000000002",
+  "customername": "sheetal mohite",
+  "registrationnummber": "MH03CE3245",
+  "make": "HONDA",
+  "model": "UNICORN 160cc"
+},
+{
+  "loanaccountnumber": "TWL1000000003",
+  "customername": "kailash aandhale",
+  "registrationnummber": "MH03DE3432",
+  "make": "BAJAJ",
+  "model": "PURSER 150cc"
+},
+{
+  "loanaccountnumber": "TWL1000000004",
+  "customername": "prashant thorat",
+  "registrationnummber": "MH04CE232",
+  "make": "BAJAJ",
+  "model": "BAJAJ V"
+},
+{
+  "loanaccountnumber": "TWL1000000005",
+  "customername": "nitesh kumar",
+  "registrationnummber": "MH03FE1113",
+  "make": "HONDA",
+  "model": "ACTIVA "
+},
+{
+  "loanaccountnumber": "TWL1000000006",
+  "customername": "dishant",
+  "registrationnummber": "MH03CE1234",
+  "make": "HONDA",
+  "model": "UNICORN 150cc"
+},{
+  "loanaccountnumber": "TWL1000000007",
+  "customername": "chetan chavan",
+  "registrationnummber": "MH03CE3422",
+  "make": "HONDA",
+  "model": "ACTIVA 125cc"
+},
+{
+  "loanaccountnumber": "TWL100000008",
+  "customername": "ajit gupta",
+  "registrationnummber": "MH03CE2344",
+  "make": "HONDA",
+  "model": "UNICORN 160cc"
+},
+{
+  "loanaccountnumber": "TWL1000000009",
+  "customername": "pooja shnigate",
+  "registrationnummber": "MH03DE3222",
+  "make": "BAJAJ",
+  "model": "PURSER 150cc"
+},
+{
+  "loanaccountnumber": "TWL1000000010",
+  "customername": "suraj pawar",
+  "registrationnummber": "MH04CD3332",
+  "make": "HONDA",
+  "model": "ACTIVA "
+},
+{
+  "loanaccountnumber": "TWL1000000011",
+  "customername": "raj kumar",
+  "registrationnummber": "MH03FE1413",
+  "make": "HONDA",
+  "model": "ACTIVA "
+},
+{
+  "loanaccountnumber": "TWL1000000012",
+  "customername": "anju kadam",
+  "registrationnummber": "MH03CE5534",
+  "make": "HONDA",
+  "model": "UNICORN 150cc"
+}
+]

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1005763333649",
+    "firebase_url": "https://simsnap-52f26.firebaseio.com",
+    "project_id": "simsnap-52f26",
+    "storage_bucket": "simsnap-52f26.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1005763333649:android:3db562b177185502e96bb0",
+        "android_client_info": {
+          "package_name": "com.example.simsnap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1005763333649-5621vfa437u5rpdrgsg6gfo1cjmpjc7c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbHeY2Nfdz0PYHlc5oALuqiw9IVzH3YO8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1005763333649-5621vfa437u5rpdrgsg6gfo1cjmpjc7c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
