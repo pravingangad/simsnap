@@ -4,24 +4,20 @@ import 'package:simsnap/image_upload.dart';
 class LoanDetails extends StatefulWidget {
   final String loan;
   final String name;
-  final String regno;
-  final String make;
-  final String model;
+ 
 
-  LoanDetails(this.loan, this.name, this.regno, this.make, this.model);
-
+  LoanDetails(this.loan, this.name);
   @override
   _LoanDetailsState createState() => _LoanDetailsState();
 }
 
 class _LoanDetailsState extends State<LoanDetails> {
-  double iconSize = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Customer Details'),
+          title: Text(widget.loan),
         ),
         body: ListView(
           children: <Widget>[
@@ -44,21 +40,10 @@ class _LoanDetailsState extends State<LoanDetails> {
                   DataCell(Text('customer Name')),
                   DataCell(Text('${widget.name}')),
                 ]),
-                DataRow(cells: [
-                  DataCell(Text('Registration Number')),
-                  DataCell(Text('${widget.regno}')),
-                ]),
-                DataRow(cells: [
-                  DataCell(Text('Make')),
-                  DataCell(Text('${widget.make}')),
-                ]),
-                DataRow(cells: [
-                  DataCell(Text('Model')),
-                  DataCell(Text('${widget.model}')),
-                ]),
               ],
             ),
             Container(
+              padding: EdgeInsets.all(40),
               child: RaisedButton(
                 elevation: 4,
                 textColor: Colors.white,
@@ -66,10 +51,10 @@ class _LoanDetailsState extends State<LoanDetails> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ImageUpload()),
+                    MaterialPageRoute(builder: (context) => ImageUpload(widget.loan,widget.name)),
                   );
                 },
-                child: Text('upload image'),
+                child: Text('Upload Image'),
               ),
             ),
           ],

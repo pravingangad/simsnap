@@ -4,6 +4,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class ImageUpload extends StatefulWidget {
+  final String loan;
+  final String name;
+
+  ImageUpload(this.loan,this.name);
+
   @override
   _ImageUploadState createState() => _ImageUploadState();
 }
@@ -60,7 +65,7 @@ class _ImageUploadState extends State<ImageUpload> {
           margin: EdgeInsets.all(10),
           padding: EdgeInsets.all(10),
           height: 200,
-          width: 200,
+          width: 300,
           decoration: BoxDecoration(
               color: Colors.grey[200], borderRadius: BorderRadius.circular(10)),
           alignment: Alignment.center,
@@ -71,6 +76,7 @@ class _ImageUploadState extends State<ImageUpload> {
           ));
     } else {
       return Container(
+        padding: EdgeInsets.only(top: 20),
         child: Column(
           children: <Widget>[
             Image.file(
@@ -117,9 +123,7 @@ class _ImageUploadState extends State<ImageUpload> {
                         color: Colors.redAccent,
                         onPressed: () {
                           final StorageReference firebaseStorageRef =
-                              FirebaseStorage.instance
-                                  .ref()
-                                  .child('myimage.jpg');
+                              FirebaseStorage.instance.ref().child('/${widget.loan}/${widget.name}.jpg');
                           final StorageUploadTask task =
                               firebaseStorageRef.putFile(imageFile);
                           print(task);

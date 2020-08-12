@@ -9,6 +9,7 @@ class MyApp extends StatelessWidget {
     final title = 'Loan List';
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
           brightness: Brightness.dark, primaryColor: Colors.redAccent),
       title: title,

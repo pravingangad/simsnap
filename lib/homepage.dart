@@ -18,26 +18,27 @@ class _HomePageState extends State<HomePage> {
           const Text('loading');
         } else {
           return ListView.builder(
-              itemCount: snapshot.data.documents.length,
+              itemCount: snapshot.data.documents?.length ?? 0,
               itemBuilder: (context, index) {
                 DocumentSnapshot loandata = snapshot.data.documents[index];
-                var loan = loandata['loanno'].toString();
-                var name = loandata['customername'].toString();
-                var regno = loandata['registrationno'].toString();
-                var make = loandata['make'].toString();
-                var model = loandata['model'].toString();
+                var loan = loandata['loan_account_number'];
+                var name = loandata['customer_name'];
+                var icontext = loan.substring(0, 3);
 
                 return ListTile(
-                  leading: Icon(Icons.filter_list),
-                  title: Text(loandata['loanno']),
-                  subtitle: Text(loandata['customername']),
+                  leading: CircleAvatar(
+                    backgroundColor: Colors.redAccent ,
+                    child: Text(icontext
+                    ,style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white))
+                  ),
+                  title: Text('$loan'),
+                  subtitle: Text('$name'),
                   trailing: Icon(Icons.chevron_right),
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              LoanDetails(loan, name, regno, make, model)),
+                          builder: (context) => LoanDetails(loan, name)),
                     );
                   },
                 );
