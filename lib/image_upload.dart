@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:path/path.dart';
 
 class ImageUpload extends StatefulWidget {
   final String loan;
@@ -15,11 +17,13 @@ class ImageUpload extends StatefulWidget {
 }
 
 class _ImageUploadState extends State<ImageUpload> {
-  File imageFile;
+  List<File> _imageList = [];
+  File _image;
   _openGallery(BuildContext context) async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     this.setState(() {
-      imageFile = (image);
+      _image = image;
+      _imageList.add(_image);
     });
     Navigator.of(context).pop();
   }
@@ -27,7 +31,8 @@ class _ImageUploadState extends State<ImageUpload> {
   _openCamera(BuildContext context) async {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
     this.setState(() {
-      imageFile = (image);
+      _image = image;
+      _imageList.add(_image);
     });
     Navigator.of(context).pop();
   }
@@ -60,96 +65,101 @@ class _ImageUploadState extends State<ImageUpload> {
         });
   }
 
-  Widget _decideImageView() {
-    if (imageFile == null) {
-      return Container(
-          margin: EdgeInsets.all(10),
-          padding: EdgeInsets.all(10),
-          height: 200,
-          width: 300,
-          decoration: BoxDecoration(
-              color: Colors.grey[200], borderRadius: BorderRadius.circular(10)),
-          alignment: Alignment.center,
-          // If the selected image is null we show "Tap to add post image"
-          child: Text(
-            'No image Selected',
-            style: TextStyle(color: Colors.black54),
-          ));
-    } else {
-      return Container(
-        padding: EdgeInsets.only(top: 20),
-        child: Column(
-          children: <Widget>[
-            Image.file(
-              imageFile,
-              width: 300.0,
-              height: 300.0,
-            ),
-          ],
-        ),
-      );
-    }
+  Future<Null> _uploadImages() async {
+    _imageList.forEach((f) async {
+      final StorageReference firebaseStorageRef = FirebaseStorage.instance
+          .ref()
+          .child('${widget.loan}')
+          .child(basename(f.path));
+      print(f);
+      print(f.path);
+      final StorageUploadTask imgupload = firebaseStorageRef.putFile(f);
+      StorageTaskSnapshot snapshot = await imgupload.onComplete;
+      if (snapshot.error == null) {
+        final String imageUrl = await snapshot.ref.getDownloadURL();
+        await Firestore.instance.collection("images").add({
+          "imageurl": imageUrl,
+          "name": widget.name,
+          "loan": widget.loan,
+          "createdAt": DateTime.now()
+        });
+      }
+
+      setState(() {
+        Fluttertoast.showToast(
+            msg: "Image uploaded successfully!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.redAccent,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Upload Image'),
+      appBar: new AppBar(
+        centerTitle: true,
+        title: const Text('Upload Image'),
       ),
-      body: Container(
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    _decideImageView(),
-                    Center(
-                      child: RaisedButton(
-                        elevation: 7,
-                        textColor: Colors.white,
-                        color: Colors.redAccent,
-                        onPressed: () {
-                          _showChoiceDialog(context);
-                        },
-                        child: Text('select image'),
-                      ),
-                    ),
-                    Center(
-                      child: RaisedButton(
-                        elevation: 7.0,
-                        textColor: Colors.white,
-                        color: Colors.redAccent,
-                        onPressed: () async {
-                          final StorageReference firebaseStorageRef =
-                              FirebaseStorage.instance
-                                  .ref()
-                                  .child('/${widget.loan}/${widget.name}.jpg');
-                          final StorageUploadTask imgupload =
-                              firebaseStorageRef.putFile(imageFile);
-                          StorageTaskSnapshot takesnapshot =
-                              await imgupload.onComplete;
-                          setState(() {
-                            Fluttertoast.showToast(
-                                msg: "Image uploaded successfully!",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.BOTTOM,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: Colors.redAccent,
-                                textColor: Colors.white,
-                                fontSize: 16.0);
-                          });
-                        },
-                        child: Text('Upload'),
-                      ),
-                    )
-                  ],
+      body: Center(
+        child: Column(
+          children: <Widget>[
+            Container(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: new Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: _imageList.length == 0
+                        ? new Text('no image selected')
+                        : GridView.count(
+                            shrinkWrap: true,
+                            primary: false,
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 5.0,
+                            crossAxisSpacing: 5.0,
+                            children: _imageList.map((File file) {
+                              return GestureDetector(
+                                onTap: () {},
+                                child: new GridTile(
+                                  child: new Image.file(
+                                    file,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                  ),
                 ),
               ),
-            ],
-          ),
+            ),
+            Container(
+              child: _imageList.length == 2
+                  ? RaisedButton(
+                      elevation: 4,
+                      textColor: Colors.white,
+                      color: Colors.redAccent,
+                      onPressed: () {
+                        _uploadImages();
+                      },
+                      child: Text('Upload Image'),
+                    )
+                  : RaisedButton(
+                      elevation: 4,
+                      textColor: Colors.white,
+                      color: Colors.redAccent,
+                      onPressed: () {
+                        _showChoiceDialog(context);
+                      },
+                      child: Text('Add Image'),
+                    ),
+            ),
+          ],
         ),
       ),
     );
