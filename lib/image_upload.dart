@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ImageUpload extends StatefulWidget {
   final String loan;
   final String name;
 
-  ImageUpload(this.loan,this.name);
+  ImageUpload(this.loan, this.name);
 
   @override
   _ImageUploadState createState() => _ImageUploadState();
@@ -121,12 +122,25 @@ class _ImageUploadState extends State<ImageUpload> {
                         elevation: 7.0,
                         textColor: Colors.white,
                         color: Colors.redAccent,
-                        onPressed: () {
+                        onPressed: () async {
                           final StorageReference firebaseStorageRef =
-                              FirebaseStorage.instance.ref().child('/${widget.loan}/${widget.name}.jpg');
-                          final StorageUploadTask task =
+                              FirebaseStorage.instance
+                                  .ref()
+                                  .child('/${widget.loan}/${widget.name}.jpg');
+                          final StorageUploadTask imgupload =
                               firebaseStorageRef.putFile(imageFile);
-                          print(task);
+                          StorageTaskSnapshot takesnapshot =
+                              await imgupload.onComplete;
+                          setState(() {
+                            Fluttertoast.showToast(
+                                msg: "Image uploaded successfully!",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.redAccent,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                          });
                         },
                         child: Text('Upload'),
                       ),
