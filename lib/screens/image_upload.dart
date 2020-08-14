@@ -18,6 +18,7 @@ class ImageUpload extends StatefulWidget {
 
 class _ImageUploadState extends State<ImageUpload> {
   List<File> _imageList = [];
+
   File _image;
   _openGallery(BuildContext context) async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -71,11 +72,12 @@ class _ImageUploadState extends State<ImageUpload> {
           .ref()
           .child('${widget.loan}')
           .child(basename(f.path));
-      print(f);
-      print(f.path);
+
       final StorageUploadTask imgupload = firebaseStorageRef.putFile(f);
       StorageTaskSnapshot snapshot = await imgupload.onComplete;
+
       if (snapshot.error == null) {
+     
         final String imageUrl = await snapshot.ref.getDownloadURL();
         await Firestore.instance.collection("images").add({
           "imageurl": imageUrl,
@@ -159,6 +161,7 @@ class _ImageUploadState extends State<ImageUpload> {
                       child: Text('Add Image'),
                     ),
             ),
+           
           ],
         ),
       ),
